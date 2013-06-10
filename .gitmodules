@@ -1,0 +1,3 @@
+[submodule "projects/pyvcf"]
+	path = projects/pyvcf
+	url = git://github.com/innovativemedicine/pyvcf.git
