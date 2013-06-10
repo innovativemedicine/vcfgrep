@@ -1,1 +1,31 @@
 #!/usr/bin/env python
+import vcf
+import csv
+import fileinput
+import re
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('files', nargs="+")
+    args = parser.parse_args()
+    genes=fileinput.FileInput('acmg_genelist.txt')
+    genereader=csv.reader(genes, delimiter=",")
+    x=[]
+    for line in genereader:
+    	x=x+line
+    genelist=set(x)
+    for filename in args.files:
+        input=fileinput.FileInput(filename)
+		reader = csv.reader(input, delimiter=",")
+		genefinder(reader, genelist)
+
+
+def genefinder(varlist,geneset):
+	for line in varlist:
+		for word in geneset:
+			if word in re.split(', |\(|\)',line[1]):
+				print line 
+				break
+
+if __name__ == '__main__':
+    main()
