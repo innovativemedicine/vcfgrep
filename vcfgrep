@@ -17,8 +17,6 @@ def main():
     for line in genereader:
     	x=x+line
     genelist=set(x)
-    # for filename in args.files:
-        # input=fileinput.FileInput(filename)
     reader = csv.reader(args.vcf, delimiter=delim)
     genefinder(reader, genelist,delim)
 
