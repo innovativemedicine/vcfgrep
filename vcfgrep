@@ -3,28 +3,31 @@ import vcf
 import csv
 import fileinput
 import re
+import argparse
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('files', nargs="+")
+    parser.add_argument('genelist', nargs="+")
+    parser.add_argument('--vcf', type=argparse.FileType('r'), required=True)
     args = parser.parse_args()
-    genes=fileinput.FileInput('acmg_genelist.txt')
-    genereader=csv.reader(genes, delimiter=",")
+    delim = ","
+    genes=fileinput.FileInput(args.genelist)
+    genereader=csv.reader(genes, delimiter=delim)
     x=[]
     for line in genereader:
     	x=x+line
     genelist=set(x)
-    for filename in args.files:
-        input=fileinput.FileInput(filename)
-		reader = csv.reader(input, delimiter=",")
-		genefinder(reader, genelist)
+    # for filename in args.files:
+        # input=fileinput.FileInput(filename)
+    reader = csv.reader(args.vcf, delimiter=delim)
+    genefinder(reader, genelist,delim)
 
 
-def genefinder(varlist,geneset):
+def genefinder(varlist,geneset,delimet):
 	for line in varlist:
 		for word in geneset:
 			if word in re.split(', |\(|\)',line[1]):
-				print line 
+				print delimet.join(line) 
 				break
 
 if __name__ == '__main__':
